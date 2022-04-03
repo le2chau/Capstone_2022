@@ -18,6 +18,7 @@ String getRandString(int len) {
 }
 
 class EditNotePage extends StatefulWidget{
+
   @override
   State<EditNotePage> createState() => _EditNotePageState();
 }
@@ -28,34 +29,38 @@ class _EditNotePageState extends State<EditNotePage> {
   TextEditingController titleController = TextEditingController();
   TextEditingController contentController = TextEditingController();
 
+  // ===========================================================================
+  // This add note page shows up with a top app bar containing the page's
+  // title and Done text button to finish. The next part of the screen is the
+  // body part that shows the place to add image, title, change the date, and
+  // content of the note.
+  // ===========================================================================
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Add Note"),
         actions: [
           TextButton(
             onPressed: ()  async {
-
               showDialog(
                   context: context,
                   barrierDismissible: false,
                   builder: (context) {
                     return Center(
-                        child: CircularProgressIndicator(),
+                      child: CircularProgressIndicator(),
                     );
-                  });
+                  }
+              );
 
+              // Create random string in the database
               String? imageUrl;
               if(imageFile != null){
                 String randomString = getRandString(32);
-                await FirebaseStorage.instance.ref("Image/${randomString}").putFile(
-                    imageFile!
-                );
+                await FirebaseStorage.instance.ref("Image/${randomString}").putFile(imageFile!);
                 imageUrl = await FirebaseStorage.instance.ref("Image/${randomString}").getDownloadURL();
               }
-
               FirebaseDatabase.instance.ref("${getRandString(32)}").set({
                   "title": titleController.text,
                   "content": contentController.text,
@@ -63,20 +68,19 @@ class _EditNotePageState extends State<EditNotePage> {
                   "image": imageUrl,
                   "avatar": userImageUrl,
                   "name": userName,
-                });
-
+              });
               Navigator.pop(context);
               Navigator.pop(context);
-
             },
             child: Text("Done", style: TextStyle(color: Colors.white),),
-
           )
         ]
       ),
       body: SingleChildScrollView(
         child: Column(
             children: [
+
+              // Add picture
               GestureDetector(
                   onTap: () async {
                     XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
@@ -86,7 +90,6 @@ class _EditNotePageState extends State<EditNotePage> {
                       else
                         imageFile = File(image.path);
                     });
-
                   },
                   child: imageFile == null?  Row(
                     children: [
@@ -94,7 +97,8 @@ class _EditNotePageState extends State<EditNotePage> {
                       SizedBox(width: 10),
                       Text("Add Picture")
                     ],
-                  ) : Image.file(
+                  ) :
+                  Image.file(
                     imageFile!,
                     width: double.infinity,
                     height: 200,
@@ -102,13 +106,15 @@ class _EditNotePageState extends State<EditNotePage> {
                   )
               ),
               SizedBox(height: 20),
+
+              // Add note title
               TextField(
                 controller: titleController,
-                decoration: InputDecoration(
-                    hintText: "Note title"
-                ),
+                decoration: InputDecoration(hintText: "Note title"),
               ),
               SizedBox(height: 20),
+
+              // Edit created day
               GestureDetector(
                 onTap: () {
                   showModalBottomSheet(
@@ -135,11 +141,11 @@ class _EditNotePageState extends State<EditNotePage> {
                     ]
                 ),
               ),
+
+              // Add note content
               TextField(
                 controller: contentController,
-                decoration: InputDecoration(
-                    hintText: "Note content"
-                ),
+                decoration: InputDecoration(hintText: "Note content"),
                 maxLines: 10,
               ),
             ]

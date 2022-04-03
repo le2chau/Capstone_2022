@@ -15,6 +15,12 @@ class NoteView extends StatelessWidget{
   const NoteView({Key? key, this.title, this.content, this.imageUrl, this.date,
     required this.userAvatar, required this.userName, required this.serverID}) : super(key: key);
 
+  // ===========================================================================
+  // This detailed note page shows up with a top app bar containing the page's
+  // title. The next part of the screen is the body part that displays the
+  // image, title, date, and content of the note.
+  // ===========================================================================
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,22 +38,21 @@ class NoteView extends StatelessWidget{
             ),
           ),
         if(title != null)
-          Text(title!, overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold, fontSize: 16)),
+          Text(title!, overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  color: Colors.redAccent,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16)),
         if(content != null)
           Text(content!, overflow: TextOverflow.ellipsis),
         Expanded(child: NoteCreator(date: date, userAvatar: userAvatar, userName: userName)),
       ],
-    ),
+      ),
     );
-
-
   }
-
 }
 
-
 class NotePreview extends StatelessWidget{
-
   final String? title;
   final String? content;
   final String? imageUrl;
@@ -59,31 +64,40 @@ class NotePreview extends StatelessWidget{
   const NotePreview({Key? key, this.title, this.content, this.imageUrl, this.date,
     required this.userAvatar, required this.userName, required this.serverID}) : super(key: key);
 
+  // ===========================================================================
+  // This class defines the preview of the note in the main screen (displays
+  // the title, snippet of content, date and created person) and actions users
+  // can perform on the card (long press for deletion and tap for viewing
+  // the details.
+  // ===========================================================================
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+
+      // Long press on the note card to delete
       onLongPress: () {
-        showModalBottomSheet(context: context,
-            builder: (context){
+        showModalBottomSheet(context: context, builder: (context){
           return GestureDetector(
             onTap: () {
               Navigator.pop(context);
               FirebaseDatabase.instance.ref(serverID).remove();
             },
               child: Container(
-                  padding: EdgeInsets.all(10),
-                  child: Row(
-                    children: [
-                      Icon(Icons.delete, color: Colors.red),
-                      SizedBox(width: 10),
-                      Text("Delete", style: TextStyle(color: Colors.red),)
-                    ],
-                  ),
+                padding: EdgeInsets.all(10),
+                child: Row(
+                  children: [
+                    Icon(Icons.delete, color: Colors.red),
+                    SizedBox(width: 10),
+                    Text("Delete", style: TextStyle(color: Colors.red),)
+                  ],
+                ),
               )
           );
-            }
-        );
+        });
       },
+
+      // Tap on the note card to view the note
       onTap: () {
         Navigator.push(context, MaterialPageRoute(
             builder: (context) {
@@ -100,6 +114,7 @@ class NotePreview extends StatelessWidget{
         ));
       },
 
+      // Preview of the note
       child: Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(16)),
@@ -117,7 +132,10 @@ class NotePreview extends StatelessWidget{
                   ),
                 ),
               if(title != null)
-                Text(title!, overflow: TextOverflow.ellipsis, style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold, fontSize: 16)),
+                Text(title!, overflow: TextOverflow.ellipsis, style: TextStyle(
+                    color: Colors.redAccent,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16)),
               if(content != null)
                 Text(content!, overflow: TextOverflow.ellipsis),
               Expanded(child: NoteCreator(date: date, userAvatar: userAvatar, userName: userName)),
@@ -128,6 +146,7 @@ class NotePreview extends StatelessWidget{
   }
 }
 
+// The display of note creator's avatar, name and created date
 class NoteCreator extends StatelessWidget{
   final String? date;
   final String userName;
@@ -145,7 +164,6 @@ class NoteCreator extends StatelessWidget{
         children: [
           Avatar(imageUrl: userAvatar),
           SizedBox(width: 8),
-
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -162,14 +180,12 @@ class NoteCreator extends StatelessWidget{
   }
 }
 
+// The display of note creator's avatar
 class Avatar extends StatelessWidget{
   final double size;
   final String imageUrl;
 
-
-  const Avatar({Key? key, this.size = 25,
-    required this.imageUrl
-  }): super(key: key);
+  const Avatar({Key? key, this.size = 25, required this.imageUrl}): super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -177,9 +193,7 @@ class Avatar extends StatelessWidget{
       width: size,
       height: size,
       clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle
-      ),
+      decoration: BoxDecoration(shape: BoxShape.circle),
       child: Image.network(
         imageUrl,
         fit: BoxFit.cover,

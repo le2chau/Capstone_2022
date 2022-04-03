@@ -11,11 +11,19 @@ String userImageUrl = "https://images.unsplash.com/photo-1507525428034-b723cf961
 String userName = "Chau";
 
 class EditAccountPage extends StatefulWidget {
+
   @override
   State<EditAccountPage> createState() => _EditAccountPageState();
 }
 
 class _EditAccountPageState extends State<EditAccountPage> {
+
+  // ===========================================================================
+  // This edit account page shows up with a top app bar containing the page's
+  // title. Users can change the avatar and the account's name by tapping on
+  // the avatar or the name.
+  // ===========================================================================
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,17 +36,17 @@ class _EditAccountPageState extends State<EditAccountPage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(height: 20),
+
+            // Edit avatar
             GestureDetector(
               child: Avatar(size:200, imageUrl: userImageUrl),
               onTap: () async {
                 XFile? image = await ImagePicker().pickImage(source: ImageSource.gallery);
                 File? imageFile;
-
                   if(image == null)
                     imageFile = null;
                   else
                     imageFile = File(image.path);
-
                 if(imageFile != null){
                   String randomString = getRandString(32);
                   await FirebaseStorage.instance.ref("Image/${randomString}").putFile(
@@ -49,6 +57,8 @@ class _EditAccountPageState extends State<EditAccountPage> {
                 };
               },
             ),
+
+            // Edit account's name
             GestureDetector(
               child: Text(userName),
               behavior: HitTestBehavior.translucent,
@@ -57,7 +67,6 @@ class _EditAccountPageState extends State<EditAccountPage> {
                   context: context,
                   builder: (context) {
                     TextEditingController controller = TextEditingController();
-
                     return Dialog(
                       child: Container(
                         height: 200,
@@ -78,11 +87,12 @@ class _EditAccountPageState extends State<EditAccountPage> {
                         )
                       )
                     );
-                }
-                  );
-                })
+                  }
+                );
+              }
+            )
           ],
-      )
+        )
       )
     );
   }

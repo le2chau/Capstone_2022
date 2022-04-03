@@ -6,7 +6,6 @@ import 'AccountUI/editaccount.dart';
 import 'noteui/editnote.dart';
 import 'noteui/note.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -16,29 +15,18 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
+        // Use the blue theme for Material widgets.
         primarySwatch: Colors.blue,
       ),
       home: NotePage(),
     );
   }
 }
-
-
 
 class NotePage extends StatefulWidget {
 
@@ -49,6 +37,7 @@ class NotePage extends StatefulWidget {
 class _NotePageState extends State<NotePage> {
   List<dynamic> noteList = [];
 
+  // Get data from Firebase to the initState
   @override
   void initState() {
     var db = FirebaseDatabase.instance;
@@ -59,19 +48,23 @@ class _NotePageState extends State<NotePage> {
           if(event.snapshot.value != null)
             noteList.addAll((event.snapshot.value as Map).entries);
           setState(() {});
-        }
+      }
     );
     super.initState();
   }
 
+  // ===========================================================================
+  // This app shows up with a top app bar containing the page's title and the
+  // icon to edit the account info. The next part of the screen is the body part
+  // that displays all the notes. The final element of this screen is the
+  // floating action button leading to the edit note page.
+  // ===========================================================================
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         appBar: AppBar(
           title: const Text("Community Note"),
-
-          //
           actions: [
             IconButton(onPressed: () {
               Navigator.push(context, MaterialPageRoute(
@@ -112,8 +105,7 @@ class _NotePageState extends State<NotePage> {
                 builder: (context) {
                   return EditNotePage();
                 }
-            )
-            );
+            ));
           },
           icon: Icon(Icons.add),
           label: Text("Add Note"),

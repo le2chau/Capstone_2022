@@ -1,16 +1,30 @@
-# capstone_chaule
+# Note feature for Capstone
 
-A new Flutter project for Capstone project
+The project shows a simple Flutter application that allows users to create new notes, as well as editing their personal account.
 
-## Getting Started
+## Preview
 
-This project is a starting point for a Flutter application.
+See https://www.loom.com/share/8faa8af3b8eb4dda90387d4d9e4ae45b for a full demo of the application.
 
-A few resources to get you started if this is your first Flutter project:
+## User Story
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+- Create a new note (add title/date/content/image)
+- Delete a note
+- View a note
+- Change account's name and avatar
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Important bits
+
+`lib/main.dart`
+Here the app sets up objects it needs to track state: a list of notes in the preview mode.
+
+`lib/noteui/editnote.dart`
+This directory contains widgets to create a new note.
+
+`lib/noteui/note.dart`
+This directory contains widgets to display the details of a specific note and the preview of all the notes in the default main screen.
+
+`lib/accountui/editaccount.dart`
+This directory contains widgets to edit the account's name and avatar.
+
+
