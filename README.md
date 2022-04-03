@@ -4,7 +4,7 @@ The project shows a simple Flutter application that allows users to create new n
 
 ## Preview
 
-See https://www.loom.com/share/8faa8af3b8eb4dda90387d4d9e4ae45b for a full demo of the application.
+For a full demo of the application: https://www.loom.com/share/8faa8af3b8eb4dda90387d4d9e4ae45b 
 
 ## User Story
 
@@ -15,16 +15,22 @@ See https://www.loom.com/share/8faa8af3b8eb4dda90387d4d9e4ae45b for a full demo 
 
 ## Important bits
 
-`lib/main.dart`
+`lib/main.dart` </br>
 Here the app sets up objects it needs to track state: a list of notes in the preview mode.
 
-`lib/noteui/editnote.dart`
+</br>
+
+`lib/noteui/editnote.dart` </br>
 This directory contains widgets to create a new note.
 
-`lib/noteui/note.dart`
+</br>
+
+`lib/noteui/note.dart` </br>
 This directory contains widgets to display the details of a specific note and the preview of all the notes in the default main screen.
 
-`lib/accountui/editaccount.dart`
+</br>
+
+`lib/accountui/editaccount.dart` </br>
 This directory contains widgets to edit the account's name and avatar.
 
 
